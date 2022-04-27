@@ -23,11 +23,11 @@ class NewVisitorsTest(unittest.TestCase):
         # She sees, that the header and page header titles the lists
         # of urgent tasks
         self.assertIn('To-Do', self.browser.title)
-        header_text = self.browser.find_element(by='h1').text
+        header_text = self.browser.find_element_by_tag_name('h1').text
         self.assertIn('To-Do', header_text)
 
         # It is immediately inviting her to enter the item of list
-        inputbox = self.browser.find_element('id_new_item')
+        inputbox = self.browser.find_element_by_id('id_new_item')
         self.assertEqual(
             inputbox.get_attribute('placeholder'),
             'Enter a to-do item'
@@ -40,12 +40,13 @@ class NewVisitorsTest(unittest.TestCase):
         # When she is pressing enter, the page is updating, and now the page
         # contains "1: Buy peacock feathers" like item of the list
         inputbox.send_keys(Keys.ENTER)
-        time.sleep(1)
+        time.sleep(3)
 
-        table = self.browser.find_element('id_new_item')
-        rows = self.browser.find_elements(by='tr')
+        table = self.browser.find_element_by_id('id_new_item')
+        rows = self.browser.find_elements_by_id('tr')
         self.assertTrue(
-            any(row.text == '1: Buy peacock feathers' for row in rows)
+            any(row.text == '1: Buy peacock feathers' for row in rows),
+            "New to-do item not appear in table"
         )
 
         # The text field still inviting her to add one more item
