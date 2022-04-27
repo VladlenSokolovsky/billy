@@ -1,4 +1,6 @@
 from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+import time
 import unittest
 
 class NewVisitorsTest(unittest.TestCase):
@@ -20,20 +22,35 @@ class NewVisitorsTest(unittest.TestCase):
         # She sees, that the header and page header titles the lists
         # of urgent tasks
         self.assertIn('To-Do', self.browser.title)
-        self.fail('To finish the test')
+        header_text = self.browser.find_element_by_tag_name('h1').text
+        self.assertIn('To-Do', header_text)
 
         # It is immediately inviting her to enter the item of list
+        inputbox = self.browser.find_element_by_id('id_new_item')
+        self.assertEqual(
+            inputbox.get_attribute('placeholder'),
+            'Enter a to-do item'
+        )
 
         # She enters in the text field "Buy peacock feathers" (her hobby is
         # fly knitting)
+        inputbox.send_keys('Buy peacock feathers')
 
         # When she is pressing enter, the page is updating, and now the page
         # contains "1: Buy peacock feathers" like item of the list
+        inputbox.send_keys(Keys.ENTER)
+        time.sleep(1)
+
+        table = self.browser.find_element_by_id('id_new_item')
+        rows = self.browser.find_elements_by_id('tr')
+        self.assertTrue(
+            any(row.text == '1: Buy peacock feathers' for row in rows)
+        )
 
         # The text field still inviting her to add one more item
         # She enters "To do the peacock feather fly"
         # (Edith is very methodical)
-
+        self.fail('Finish the test')
         # The page is updating again, and now displays the both of the elements of her list
 
         # Edith is interesting, if the site will remember her list?
