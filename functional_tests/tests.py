@@ -1,10 +1,11 @@
+from django.test import LiveServerTestCase
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import time
 import unittest
 
 
-class NewVisitorsTest(unittest.TestCase):
+class NewVisitorTest(LiveServerTestCase):
     """Test of the new visitor"""
 
     def setUp(self):
@@ -23,7 +24,7 @@ class NewVisitorsTest(unittest.TestCase):
     def test_can_start_a_list_and_retrieve_it_later(self):
         # Edith heard about new app for list
         # urgent tasks. She is deciding to rate her homepage
-        self.browser.get('http://localhost:8000')
+        self.browser.get(self.live_server_url)
 
         # She sees, that the header and page header titles the lists
         # of urgent tasks
