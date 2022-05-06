@@ -1,0 +1,13 @@
+[Unit]
+Description=Gunicorn server for staging.billynote.club
+
+[Service]
+Restart=on-failure
+User=billynote
+WorkingDirectory=/home/billynote/sites/staging.billynote.club
+ExecStart=/home/billynote/sites/staging.billynote.club/venv/bin/gunicorn \
+    --bind unix:/tmp/staging.billynote.club.socket \
+    superlists.wsgi:application
+
+[Install]
+WantedBy=multi-user.target
