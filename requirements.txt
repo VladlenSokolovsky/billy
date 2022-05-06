@@ -29,3 +29,4 @@ urllib3==1.26.9
 user-agent==0.1.10
 weblib==0.1.30
 wsproto==1.1.0
+gunicorn==20.1.0
