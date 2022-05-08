@@ -45,11 +45,11 @@ def _update_settings(source_folder, site_name):
     append(settings_path, '\nfrom .secret_key import SECRET_KEY')
 
 
-# def _update_venv(source_folder):
-#     venv_folder = source_folder + '/../venv'
-#     if not exists(venv_folder + '/bin/pip'):
-#         run(f'python3.8 - m venv {venv_folder}')
-#     run(f'{venv_folder}/bin/pip install -r {source_folder}/requirements.txt')
+def _update_venv(source_folder):
+    venv_folder = source_folder + '/../venv'
+    if not exists(venv_folder + '/bin/pip'):
+        run(f'python3.8 - m venv {venv_folder}')
+    run(f'{venv_folder}/bin/pip install -r {source_folder}/requirements.txt')
 
 
 def _update_static_files(source_folder):
