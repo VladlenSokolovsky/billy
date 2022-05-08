@@ -49,19 +49,16 @@ def _update_venv(source_folder):
     venv_folder = source_folder + '/../venv'
     if not exists(venv_folder + '/bin/pip'):
         run(f'python3.8 - m venv {venv_folder}')
-    run(f'{venv_folder}/bin/pip install -r {source_folder}/ \
-        requirements.txt')
+    run(f'{venv_folder}/bin/pip install -r {source_folder}/requirements.txt')
 
 
 def _update_static_files(source_folder):
     run(
-        f'cd {source_folder}'
-        ' && ../venv/bin/python manage.py collectstatic --noinput'
+        f'cd {source_folder}'' && ../venv/bin/python manage.py collectstatic --noinput'
     )
 
 
 def _update_database(source_folder):
     run(
-        f'cd {source_folder}'
-        ' && ../venv/bin/python manage.py migrate --noinput'
+        f'cd {source_folder}'' && ../venv/bin/python manage.py migrate --noinput'
     )
