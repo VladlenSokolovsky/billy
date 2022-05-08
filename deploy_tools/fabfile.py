@@ -4,6 +4,7 @@ import random
 
 REPO_URL = 'https://github.com/VladlenSokolovsky/billy.git'
 
+
 def deploy():
     site_folder = f'/home/{env.user}/sites/{env.host}'
     source_folder = site_folder + '/source'
@@ -29,3 +30,38 @@ def _get_latest_source(source_folder):
     run(f'cd {source_folder} && git reset --hard {current_commit}')
 
 
+def _update_settings(source_folder, site_name):
+    settings_path = source_folder + '/superlists/settings.py'
+    sed(settings_path, "DEBUG = True", "DEBUG = False")
+    sed(settings_path,
+        'ALLOWED_HOSTS =.+$',
+        f'ALLOWED_HOSTS = ["{site_name}"]'
+    )
+    secret_key_file = source_folder + '/superlists/secret_key.py'
+    if not exists(secret_key_file):
+        chars = 'abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)'
+        key = ''.join(random.SystemRandom().choice(chars) for _ in range(50))
+        append(secret_key_file, f'SECRET_KEY = "{key}"')
+    append(settings_path, '\nfrom .secret_key import SECRET_KEY')
+
+
+def _update_venv(source_folder):
+    venv_folder = source_folder + '/../venv'
+    if not exists(venv_folder + '/bin/pip'):
+        run(f'python3.8 - m venv {venv_folder}')
+    run(f'{venv_folder}/bin/pip install -r {source_folder}/ \
+        requirements.txt')
+
+
+def _update_static_files(source_folder):
+    run(
+        f'cd {source_folder}'
+        ' && ../venv/bin/python manage.py collectstatic --noinput'
+    )
+
+
+def _update_database(source_folder):
+    run(
+        f'cd {source_folder}'
+        ' && ../venv/bin/python manage.py migrate --noinput'
+    )
