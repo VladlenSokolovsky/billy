@@ -1,9 +1,11 @@
-from selenium.common.exceptions import WebDriverException
+import os
+import time
+
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium import webdriver
+from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.by import By
-import time
-import os
+from selenium.webdriver.common.keys import Keys
 
 MAX_WAIT = 10
 
@@ -46,5 +48,5 @@ class FunctionalTest(StaticLiveServerTestCase):
                 time.sleep(0.5)
 
     def get_item_input_box(self):
-        self.browser.find_element(By.ID, 'id_text')
+        return self.browser.find_element(By.ID, 'id_text')
 
