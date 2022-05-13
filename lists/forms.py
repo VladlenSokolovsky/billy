@@ -10,7 +10,7 @@ class ItemForm(forms.models.ModelForm):
 
     class Meta:
         model = Item
-        fields = ('text',)
+        fields = ['text']
         widgets = {
             'text': forms.fields.TextInput(attrs={
                 'placeholder': 'You are welcome !!!',
@@ -39,3 +39,7 @@ class ExistingListItemForm(ItemForm):
         except ValidationError as e:
             e.error_dict = {'text': [DUPLICATE_ITEM_ERROR]}
             self._update_errors(e)
+
+
+    # def save(self):
+    #     return forms.models.ModelForm.save(self)
